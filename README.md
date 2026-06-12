@@ -47,6 +47,47 @@ docker compose up --build
 
 Mở http://localhost:3000
 
+## Deploy
+
+Dự án là ứng dụng **Next.js SSR** (`next.config.ts` đặt `output: "standalone"`), nên cần môi trường Node — **GitHub Pages không chạy được** (chỉ phục vụ static).
+
+### 1. Vercel (khuyến nghị — dễ nhất)
+
+Cách 1 — qua giao diện:
+1. Vào [vercel.com/new](https://vercel.com/new), import repo `thanhiktt/tsolution-preview`.
+2. Vercel tự nhận diện Next.js — giữ nguyên mặc định (Build: `next build`, Output tự động).
+3. Bấm **Deploy**. Mỗi lần `git push` lên `main` sẽ tự deploy lại.
+
+Cách 2 — qua CLI:
+
+```bash
+npm i -g vercel
+vercel          # preview
+vercel --prod   # production
+```
+
+### 2. Docker (tự host trên server bất kỳ)
+
+```bash
+docker compose up --build -d        # chạy nền, cổng 3000
+# hoặc build image thủ công:
+docker build -t tsolution-preview .
+docker run -p 3000:3000 tsolution-preview
+```
+
+### 3. Node self-host (VPS)
+
+```bash
+npm ci
+npm run build
+npm run start          # phục vụ tại cổng 3000
+# production nên chạy qua process manager, ví dụ:
+# pm2 start "npm run start" --name tsolution
+```
+
+> Đặt biến môi trường `PORT` nếu muốn đổi cổng (vd `PORT=8080 npm run start`).
+> Khuyến nghị chạy sau reverse proxy (Nginx/Caddy) để xử lý HTTPS và domain.
+
 ## Cấu trúc
 
 ```
