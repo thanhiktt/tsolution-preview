@@ -58,7 +58,59 @@ vercel          # preview
 vercel --prod   # production
 ```
 
-### 2. Node self-host (VPS)
+### 2. Cloudflare (Workers, qua adapter OpenNext)
+
+Cloudflare chạy Next.js qua adapter chính thức [`@opennextjs/cloudflare`](https://opennext.js.org/cloudflare).
+
+> ⚠️ **Yêu cầu phiên bản:** adapter cần `next >= 16.2.6`. Project đang ở `16.2.1`, nên nâng trước:
+> ```bash
+> npm i next@latest
+> ```
+
+**1. Cài adapter + wrangler**
+
+```bash
+npm i -D @opennextjs/cloudflare wrangler
+```
+
+**2. Tạo `open-next.config.ts`** ở thư mục gốc:
+
+```ts
+import { defineCloudflareConfig } from "@opennextjs/cloudflare";
+
+export default defineCloudflareConfig();
+```
+
+**3. Tạo `wrangler.jsonc`** ở thư mục gốc:
+
+```jsonc
+{
+  "main": ".open-next/worker.js",
+  "name": "tsolution-preview",
+  "compatibility_date": "2025-03-25",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" }
+}
+```
+
+**4. Thêm scripts vào `package.json`:**
+
+```json
+"preview:cf": "opennextjs-cloudflare build && opennextjs-cloudflare preview",
+"deploy:cf": "opennextjs-cloudflare build && opennextjs-cloudflare deploy"
+```
+
+**5. Đăng nhập & deploy:**
+
+```bash
+npx wrangler login      # mở trình duyệt, ủy quyền tài khoản Cloudflare
+npm run preview:cf      # chạy thử cục bộ trên runtime Workers
+npm run deploy:cf       # deploy lên Cloudflare
+```
+
+Hoặc auto-deploy mỗi lần push: vào **Cloudflare Dashboard → Workers & Pages → Create → Connect repo** `thanhiktt/tsolution-preview`, chọn framework **Next.js**, lệnh build `npx opennextjs-cloudflare build`.
+
+### 3. Node self-host (VPS)
 
 ```bash
 npm ci
