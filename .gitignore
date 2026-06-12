@@ -50,3 +50,24 @@ temp/
 
 # QA screenshots (dev artifacts, large binaries)
 docs/design-references/
+
+# Template / agent tooling — kept local, not part of the website repo
+.aider.conf.yml
+.amazonq/
+.augment/
+.claude/
+.clinerules
+.codex/
+.continue/
+.cursor/
+.gemini/
+.opencode/
+.windsurf/
+.windsurfrules
+.github/
+AGENTS.md
+CLAUDE.md
+GEMINI.md
+CHANGELOG.md
+docs/
+scripts/
