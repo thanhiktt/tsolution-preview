@@ -39,14 +39,6 @@ Mở http://localhost:3000
 | `npm run typecheck` | Kiểm tra TypeScript |
 | `npm run check` | Lint + typecheck + build |
 
-## Chạy bằng Docker (tùy chọn)
-
-```bash
-docker compose up --build
-```
-
-Mở http://localhost:3000
-
 ## Deploy
 
 Dự án là ứng dụng **Next.js SSR** (`next.config.ts` đặt `output: "standalone"`), nên cần môi trường Node — **GitHub Pages không chạy được** (chỉ phục vụ static).
@@ -66,16 +58,7 @@ vercel          # preview
 vercel --prod   # production
 ```
 
-### 2. Docker (tự host trên server bất kỳ)
-
-```bash
-docker compose up --build -d        # chạy nền, cổng 3000
-# hoặc build image thủ công:
-docker build -t tsolution-preview .
-docker run -p 3000:3000 tsolution-preview
-```
-
-### 3. Node self-host (VPS)
+### 2. Node self-host (VPS)
 
 ```bash
 npm ci
